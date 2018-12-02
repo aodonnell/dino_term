@@ -42,9 +42,13 @@ void loop(Engine * engine){
 
     while(!engine->should_close){
         static int fno;
-        sleep(1);
-        engine->should_close = 1;
+        x++; // Advance the ball to the right
+        clear();
+        mvprintw(y, x, "o"); // Print our "ball" at the current xy position 
+        refresh();
+        usleep(30000); // Shorter delay between movements
     }
+        engine->should_close = 1;
 }
 
 void init(Engine * engine){
