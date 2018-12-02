@@ -14,4 +14,6 @@ void run(Engine * engine);
 
 void init();
 
+void finish();
+
 #endif

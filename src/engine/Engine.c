@@ -47,6 +47,8 @@ void run(Engine * engine){
         sleep(1);
         engine->should_close = 1;
     }
+
+    finish();
 };
 
 void init(){
