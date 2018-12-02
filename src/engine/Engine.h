@@ -8,12 +8,14 @@ typedef struct engine {
 
 Engine * newEngine(int fps);
 
-void destroy(Engine * engine);
+void destroyEngine(Engine * engine);
 
-void run(Engine * engine);
+void start(Engine * engine);
 
-void init();
+void loop(Engine * engine);
 
-void finish();
+void init(Engine * engine);
+
+void finish(Engine * engine);
 
 #endif

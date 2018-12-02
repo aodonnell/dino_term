@@ -1,11 +1,11 @@
 CC = gcc
 
-csrc = 	$(wildcard src/*.c) \
-		$(wildcard src/engine/*.c) 
+csrc = $(wildcard src/*.c) \
+ 	   $(wildcard src/engine/*.c) 
 
-obj  = 	$(csrc:.c=.o)
+obj = $(csrc:.c=.o)
 
-odir =	./obj
+odir = ./obj
 
 LDFLAGS = -lncurses
 

@@ -1,28 +1,30 @@
 #include <ncurses.h>
 #include <stdlib.h>
+#include <assert.h>
+#include <unistd.h>
 
 #include "Engine.h"
-
-static int _the_engine_exists = 0;
-static Engine * _the_engine;
 
 // singleton?
 Engine * newEngine(int fps){
 
-    if(!_the_engine_exists){
-        _the_engine = calloc(1, sizeof(Engine));
-        _the_engine_exists = 1;
-    }
+    Engine * engine = calloc(1, sizeof(Engine));
+    engine->fps = fps;
 
-    _the_engine->fps = fps;
-
-    return _the_engine;
+    return engine;
 };
 
-void destroy(Engine * engine){
+void destroyEngine(Engine * engine){
     free(engine);
-    _the_engine_exists = 0;
 }
+
+
+void start(Engine * engine){
+
+    init(engine);
+    loop(engine);
+    finish(engine);
+};
 
 /* 
  * check the time
@@ -35,28 +37,22 @@ void destroy(Engine * engine){
  * 
  * stall until the next frame happens 1/fps seconds from when we checked the time
  */
-void run(Engine * engine){
-    if(engine != _the_engine){
-        printf("The engine you're attempting to run does not match the true engine.\n");
-    }
-
-    init();
+void loop(Engine * engine){
+    int x = 0, y = 0;
 
     while(!engine->should_close){
         static int fno;
         sleep(1);
         engine->should_close = 1;
     }
+}
 
-    finish();
-};
-
-void init(){
+void init(Engine * engine){
     initscr();
     noecho();
     curs_set(FALSE);
 }
 
-void finish(){
+void finish(Engine * engine){
     endwin(); // Restore normal terminal behavior
 }
