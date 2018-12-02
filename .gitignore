@@ -1,3 +1,9 @@
+# Excecutable 
+cowbot
+
+# IDE stuff
+.vscode
+
 # Prerequisites
 *.d
 
