@@ -39,24 +39,24 @@ void start(Engine * engine){
  */
 void loop(Engine * engine){
     int max_x, max_y;
-    float x = 0, y = 25.0;
+    float x = 0, y = 15.0;
     float dx = .5, dy = 0;
-    float ddy = .3;
+    float ddy = -.5;
 
     while(!engine->should_close){
 
         getmaxyx(stdscr, max_y, max_x);
 
         static int fno;
-        if(y>=max_y){
-            dy=-0.9*dy;
+        if(y < 0){
+            dy=-0.85*dy;
         }
         x+=dx; // Advance the ball to the right
         y+=dy;
         dy+=ddy;
 
         clear();
-        mvprintw(max_y - (int)y, (int)x, "o"); // Print our "ball" at the current xy position 
+        mvprintw(max_y - (int)y, (int)x, "cool"); // Print our "ball" at the current xy position 
         refresh();
 
         if(x >= max_x){
