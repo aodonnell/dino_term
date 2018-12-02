@@ -38,17 +38,32 @@ void start(Engine * engine){
  * stall until the next frame happens 1/fps seconds from when we checked the time
  */
 void loop(Engine * engine){
-    int x = 0, y = 0;
+    int max_x, max_y;
+    float x = 0, y = 25.0;
+    float dx = .5, dy = 0;
+    float ddy = .3;
 
     while(!engine->should_close){
+
+        getmaxyx(stdscr, max_y, max_x);
+
         static int fno;
-        x++; // Advance the ball to the right
+        if(y>=max_y){
+            dy=-0.9*dy;
+        }
+        x+=dx; // Advance the ball to the right
+        y+=dy;
+        dy+=ddy;
+
         clear();
-        mvprintw(y, x, "o"); // Print our "ball" at the current xy position 
+        mvprintw(max_y - (int)y, (int)x, "o"); // Print our "ball" at the current xy position 
         refresh();
+
+        if(x >= max_x){
+            engine->should_close = 1;
+        }
         usleep(30000); // Shorter delay between movements
     }
-        engine->should_close = 1;
 }
 
 void init(Engine * engine){
