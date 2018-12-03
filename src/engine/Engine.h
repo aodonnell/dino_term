@@ -3,6 +3,7 @@
 
 typedef struct _engine {
     int fps;
+    int colors;
     int should_close;
 } Engine;
 

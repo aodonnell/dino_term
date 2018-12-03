@@ -10,6 +10,10 @@ Engine * newEngine(int fps){
 
     Engine * engine = calloc(1, sizeof(Engine));
     engine->fps = fps;
+    // engine->colors = has_colors();
+
+    // start_color();
+    // init_pair(1, COLOR_BLUE, COLOR_BLACK);
 
     return engine;
 };

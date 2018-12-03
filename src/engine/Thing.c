@@ -54,7 +54,7 @@ Thing * newThingFromFile(char * fname){
 
     // init physics
     thing->physics.s.x = 0;
-    thing->physics.s.y = 15;    
+    thing->physics.s.y = 60;    
     thing->physics.ds.x = 0.5;
     thing->physics.ds.y = 0;    
     thing->physics.d2s.x = 0;
@@ -69,7 +69,19 @@ Thing * newThingFromFile(char * fname){
 }
 
 void destroyThing(Thing * thing){
-
+    if(thing){
+        if(thing->lines){
+            for(int i=0; i<thing->size.y; i++){
+                if(thing->lines[i]){
+                    free(thing->lines[i]);
+                }else{
+                    break;
+                }
+            }
+        }
+        free(thing->lines);
+    }
+    free(thing);
 }
 
 void drawThing(Thing * thing){
