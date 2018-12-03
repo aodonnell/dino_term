@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "src/engine/Engine.h"
+#include "engine/Engine.h"
 
 #define FPS 10
 

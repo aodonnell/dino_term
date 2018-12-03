@@ -19,6 +19,10 @@ void destroyEngine(Engine * engine){
 }
 
 void start(Engine * engine){
+
+    // Thing * gorilla = newThingFromFile("resources/gorilla.txt");
+    // return;
+
     init(engine);
     loop(engine);
     finish(engine);
@@ -39,30 +43,25 @@ void start(Engine * engine){
  */
 void loop(Engine * engine){
     int max_x, max_y;
-    float x = 0, y = 15.0;
-    float dx = .5, dy = 0;
-    float ddy = -.5;
+
+    Thing * gorilla = newThingFromFile("resources/gorilla.txt");
 
     while(!engine->should_close){
 
         getmaxyx(stdscr, max_y, max_x);
 
-        static int fno;
-        if(y < 0){
-            dy=-0.85*dy;
-        }
-        x+=dx; // Advance the ball to the right
-        y+=dy;
-        dy+=ddy;
-
         clear();
-        mvprintw(max_y - (int)y, (int)x, "--------"); // Print our "ball" at the current xy position 
-        refresh();
+        // mvprintw(max_y - (int)y, (int)x, "--------"); // Print our "ball" at the current xy position 
+        drawThing(gorilla);
 
-        if(x >= max_x){
+        tickf(&gorilla->physics);
+
+        refresh();
+        usleep(40000); // Shorter delay between movements
+
+        if(gorilla->physics.s.x + 18 >= max_x){
             engine->should_close = 1;
         }
-        usleep(30000); // Shorter delay between movements
     }
 }
 

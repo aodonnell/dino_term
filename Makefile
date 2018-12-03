@@ -10,6 +10,8 @@ odir = ./obj
 
 LDFLAGS = -lncurses
 
+CFLAGS = -DDEBUG
+
 cowbot: $(obj)
 	$(CC) -o $@ $^ $(LDFLAGS) $(CFLAGS)
 
