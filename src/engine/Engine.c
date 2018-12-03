@@ -44,7 +44,7 @@ void start(Engine * engine){
 void loop(Engine * engine){
     int max_x, max_y;
 
-    Thing * gorilla = newThingFromFile("resources/gorilla.txt");
+    Thing * gorilla = newThingFromFile("resources/dolphin.txt");
 
     while(!engine->should_close){
 

@@ -31,6 +31,7 @@ Thing * newThingFromFile(char * fname){
     // get rid of the newline after the size in preparation for parsing the size
     getc(fd);
 
+    // todo we should add a logfile for debugging
     #ifdef DEBUG
         printf("size: %d %d\n", thing->size.x, thing->size.y);
     #endif
@@ -77,7 +78,6 @@ void drawThing(Thing * thing){
     int max_y, max_x;
 
     getmaxyx(stdscr, max_y, max_x);
-
 
     for(int i = 0; i < thing->size.y; i++){
         mvprintw(max_y - (int) thing->physics.s.y + i, (int)thing->physics.s.x, thing->lines[i]); 

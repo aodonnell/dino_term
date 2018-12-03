@@ -1,7 +1,7 @@
 #include "Physics.h"
 
 void ticki(Physics2i * physics){
-    if(physics->s.y - 10<0){
+    if(physics->s.y - 12<0){
         physics->ds.y = -0.9*physics->ds.y;
     }
     vacci(&physics->s, &physics->ds);
@@ -9,7 +9,7 @@ void ticki(Physics2i * physics){
 }
 
 void tickf(Physics2f * physics){
-    if(physics->s.y -10 <0){
+    if(physics->s.y -12 <0){
         physics->ds.y = -0.9*physics->ds.y;
     }
     vaccf(&physics->s, &physics->ds);
