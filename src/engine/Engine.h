@@ -1,7 +1,7 @@
 #ifndef ENGINE_H_
 #define ENGINE_H_
 
-typedef struct engine {
+typedef struct _engine {
     int fps;
     int should_close;
 } Engine;

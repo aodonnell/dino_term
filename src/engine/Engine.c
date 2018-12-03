@@ -1,11 +1,11 @@
 #include <ncurses.h>
 #include <stdlib.h>
-#include <assert.h>
 #include <unistd.h>
 
 #include "Engine.h"
+#include "Thing.h"
 
-// singleton?
+// XXX singleton?
 Engine * newEngine(int fps){
 
     Engine * engine = calloc(1, sizeof(Engine));
@@ -18,9 +18,7 @@ void destroyEngine(Engine * engine){
     free(engine);
 }
 
-
 void start(Engine * engine){
-
     init(engine);
     loop(engine);
     finish(engine);
@@ -31,11 +29,13 @@ void start(Engine * engine){
  * 
  * do everything we need to calculate the next screen
  * 
- * clear the previous screen
+ * clear whatever we need to
  * 
- * draw the next screen
+ * draw whatever we need to
  * 
  * stall until the next frame happens 1/fps seconds from when we checked the time
+ * 
+ * refresh
  */
 void loop(Engine * engine){
     int max_x, max_y;
@@ -56,7 +56,7 @@ void loop(Engine * engine){
         dy+=ddy;
 
         clear();
-        mvprintw(max_y - (int)y, (int)x, "cool"); // Print our "ball" at the current xy position 
+        mvprintw(max_y - (int)y, (int)x, "--------"); // Print our "ball" at the current xy position 
         refresh();
 
         if(x >= max_x){
