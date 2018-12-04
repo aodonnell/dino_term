@@ -31,13 +31,11 @@ void vaccf(Vec2f * v1, Vec2f * v2){
     v1->y += v2->y;
 }
 
-// fixme
-char * pveci(Vec2i * v, char * s){
-    sprintf(s, "{x: %d, y: %d}", v->x, v->y);
-    return s;
+// fixme this doesn't really work well with our logger system
+void pveci(Vec2i * v){
+    printf("{x: %d, y: %d}", v->x, v->y);
 }
 
-char * pvecf(Vec2f * v, char * s){
-    sprintf(s, "{x: %2.2f, y: %2.2f}", v->x, v->y);
-    return s;
+void pvecf(Vec2f * v){
+    printf("{x: %2.2f, y: %2.2f}", v->x, v->y);
 }

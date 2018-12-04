@@ -5,16 +5,15 @@
 #include "Engine.h"
 #include "Thing.h"
 #include "util/termlib.h"
+#include "util/logger.h"
 
-const volatile Vec2i * termSize;
+// Vec2i * termSize;
 
 // XXX singleton?
 Engine * newEngine(int fps){
 
     Engine * engine = calloc(1, sizeof(Engine));
     engine->fps = fps;
-
-    termSize = getTermSize();
 
     // engine->colors = has_colors();
 
@@ -30,7 +29,7 @@ void destroyEngine(Engine * engine){
 
 void start(Engine * engine){
 
-    // Thing * gorilla = newThingFromFile("resources/gorilla.txt");
+    // Thing * dolphin = newThingFromFile("resources/dolphin.txt");
     // return;
 
     init(engine);
@@ -53,20 +52,22 @@ void start(Engine * engine){
  */
 void loop(Engine * engine){
 
-    Thing * gorilla = newThingFromFile("resources/dolphin.txt");
+    Thing * dolphin = newThingFromFile("resources/dolphin.txt");
+
+    logger("term size: {%d, %d}\n", termSize.x, termSize.y);
 
     while(!engine->should_close){
 
         termClear();
 
-        drawThing(gorilla);
+        drawThing(dolphin);
 
-        tickf(&gorilla->physics);
+        tickf(&dolphin->physics);
 
         termRefresh();
         usleep(40000); // Shorter delay between movements
 
-        if(gorilla->physics.s.x + 18 >= termSize->x){
+        if(dolphin->physics.s.x + 18 >= termSize.x){
             engine->should_close = 1;
         }
     }
