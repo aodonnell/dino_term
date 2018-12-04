@@ -1,8 +1,6 @@
 #ifndef THING_H_
 #define THING_H_
 
-
-
 #include "util/Geometry.h"
 #include "util/Physics.h"
 
@@ -14,10 +12,12 @@ typedef struct _thing {
 
 Thing * newThing();
 
-Thing * newThingFromFile(char * fnames);
+Thing * newThingFromFile(const char * fnames);
 
 void destroyThing(Thing * thing);
 
-void drawThing(Thing * thing);
+void drawThing(const Thing * thing);
+
+void drawThingHere(const Thing * thing, const Vec2i * here);
 
 #endif

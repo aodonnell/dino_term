@@ -3,6 +3,8 @@
 #include <stdarg.h>
 #include <stdlib.h>
 
+#include "termlib.h"
+
 #define BSHNRM  "\x1B[0m"
 #define BSHRED  "\x1B[31m"
 #define BSHGRN  "\x1B[32m"
@@ -93,6 +95,8 @@ void logbroke(const char * format, ...){
     va_start(arg, format);
     logcolor(BSHRED, format, arg);
     va_end(arg);
+
+    termFinish();
 
     exit(EXIT_FAILURE);
 }
