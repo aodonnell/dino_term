@@ -2,11 +2,16 @@
 #include <signal.h>
 
 #include "termlib.h"
+#include "logger.h"
 
-Vec2i termSize;
+void adjustTermSize(){
+    initscr();
+    noecho();
+    getmaxyx(stdscr, termSize.y, termSize.x);
+}
 
 void termMaxSize(){
-    getmaxyx(stdscr, termSize.y, termSize.y);
+    getmaxyx(stdscr, termSize.y, termSize.x);
 }
 
 void termInit(){
@@ -17,9 +22,10 @@ void termInit(){
 
     // get the initial termSize
     termMaxSize();
+    logger("term size: {%d, %d}\n", termSize.x, termSize.y);
 
-    // register termRefresh as the signal handler for SIGWINCH 
-    signal(SIGWINCH, (void *)termMaxSize);
+    // register termRefresh as the signal handler for SIGWINCH this doesn't really do what we think
+    // signal(SIGWINCH, (void *)adjustTermSize);
 }
 
 void termFinish(){
@@ -34,8 +40,8 @@ void termRefresh(){
     refresh();
 }
 
-void drawLine(char * line, void * vec){
-    Vec2f * pos = ( Vec2f* ) vec;
+void drawLine(char * line, Vec2i * pos){
+    logger("print pos: {%2.2f, %2.2f}\n", pos->x, pos->y);
     mvprintw(termSize.y - (int) pos->y, (int) pos->x, line); 
 }
 

@@ -3,6 +3,8 @@
 
 #include "Geometry.h"
 
+Vec2i termSize;
+
 void termInit();
 
 void termFinish();
@@ -11,7 +13,7 @@ void termClear();
 
 void termRefresh();
 
-void drawLine(char * line, void * vec);
+void drawLine(char * line, Vec2i * pos);
 
 const Vec2i * getTermSize();
 

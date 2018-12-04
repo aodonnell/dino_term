@@ -32,13 +32,6 @@ Thing * newThingFromFile(char * fname){
     // get rid of the newline after the size in preparation for parsing the size
     getc(fd);
 
-    // todo we should add a logfile for debugging
-    #ifdef DEBUG
-        printf("size: %d %d\n", thing->size.x, thing->size.y);
-    #endif
-
-    char s[thing->size.x];
-
     // initialize the lines
 
     thing->lines = calloc(thing->size.x, sizeof(char *));
@@ -88,9 +81,9 @@ void destroyThing(Thing * thing){
 void drawThing(Thing * thing){
 
     // in our dwg library we can have max_y and max_x as protected global variables or something
-    Vec2i adjust = vec2i(thing->physics.s.x, thing->physics.s.y); 
+    Vec2i adjust = vec2i((int)thing->physics.s.x, (int)thing->physics.s.y); 
     for(int i = 0; i < thing->size.y; i++){
         drawLine(thing->lines[i], &adjust);
-        adjust.y++;
+        adjust.y--;
     }
 }

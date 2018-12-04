@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdarg.h>
 #include <stdlib.h>
 
@@ -11,22 +12,29 @@
 #define BSHCYN  "\x1B[36m"
 #define BSHWHT  "\x1B[37m"
 
-FILE * logFile;
+char * logfname; 
 
 void setLogfile(char * fname){
-    if(logFile){
-        fclose(logFile);
-    }
-    logFile = fopen(fname, "w+");
+
+    FILE * logFile = fopen(fname, "w+");
+    fclose(logFile); 
+
+    int n = strlen(fname);
+    logfname = malloc(sizeof(char) * n);
+    memcpy(logfname, fname, n);
 }
 
 int logger(const char * format, ...){
     va_list arg;
     int done;
 
+    FILE * logFile = fopen(logfname, "a");
+
     va_start(arg, format);
     done = vfprintf(logFile, format, arg);
     va_end(arg);
+
+    fclose(logFile);
 
     return done;
 }
@@ -47,6 +55,8 @@ int logcolor(const char * color, const char * format, ...){
 int logsuccess(const char * format, ...){
     va_list arg;
     int done;
+
+
 
     va_start(arg, format);
     done = logcolor(BSHGRN, format, arg);
@@ -87,8 +97,6 @@ void logbroke(const char * format, ...){
     exit(EXIT_FAILURE);
 }
 
-
-
 void closeLogger(){
-    fclose(logFile);
+    // fclose(logFile);
 }

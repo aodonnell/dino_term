@@ -24,7 +24,7 @@ void vacci(Vec2i * v1, Vec2i * v2);
 void vaccf(Vec2f * v1, Vec2f * v2);
 
 // print
-char * pveci(Vec2i * v, char * s);
-char * pvecf(Vec2f * v, char * s);
+void pveci(Vec2i * v);
+void pvecf(Vec2f * v);
 
 #endif
