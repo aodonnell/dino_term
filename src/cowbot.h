@@ -6,6 +6,7 @@
 #include <string.h>
 
 #include "engine/Engine.h"
+#include "engine/util/logger.h"
 
 #define FPS 10
 

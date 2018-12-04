@@ -2,9 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-// todo implement dwg tools
-#include <ncurses.h>
+#include "util/termlib.h"
 
 #include "Thing.h"
 
@@ -26,6 +24,9 @@ Thing * newThingFromFile(char * fname){
     }
 
     // parse the dimensions of the thing
+
+    // XXX: it would be nicer to calculate it. It would make it way nicer for making resources.
+    // I guess ideally we wouldn't have to load in from files anyway and we'd have a header or something.
     fscanf(fd, "%d %d", &thing->size.x, &thing->size.y);
     
     // get rid of the newline after the size in preparation for parsing the size
@@ -87,11 +88,9 @@ void destroyThing(Thing * thing){
 void drawThing(Thing * thing){
 
     // in our dwg library we can have max_y and max_x as protected global variables or something
-    int max_y, max_x;
-
-    getmaxyx(stdscr, max_y, max_x);
-
+    Vec2i adjust = vec2i(thing->physics.s.x, thing->physics.s.y); 
     for(int i = 0; i < thing->size.y; i++){
-        mvprintw(max_y - (int) thing->physics.s.y + i, (int)thing->physics.s.x, thing->lines[i]); 
+        drawLine(thing->lines[i], &adjust);
+        adjust.y++;
     }
 }

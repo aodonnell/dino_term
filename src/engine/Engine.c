@@ -1,15 +1,21 @@
-#include <ncurses.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
 #include "Engine.h"
 #include "Thing.h"
+#include "util/termlib.h"
+
+const volatile Vec2i * termSize;
 
 // XXX singleton?
 Engine * newEngine(int fps){
 
     Engine * engine = calloc(1, sizeof(Engine));
     engine->fps = fps;
+
+    termSize = getTermSize();
+
     // engine->colors = has_colors();
 
     // start_color();
@@ -46,35 +52,30 @@ void start(Engine * engine){
  * refresh
  */
 void loop(Engine * engine){
-    int max_x, max_y;
 
     Thing * gorilla = newThingFromFile("resources/dolphin.txt");
 
     while(!engine->should_close){
 
-        getmaxyx(stdscr, max_y, max_x);
+        termClear();
 
-        clear();
-        // mvprintw(max_y - (int)y, (int)x, "--------"); // Print our "ball" at the current xy position 
         drawThing(gorilla);
 
         tickf(&gorilla->physics);
 
-        refresh();
+        termRefresh();
         usleep(40000); // Shorter delay between movements
 
-        if(gorilla->physics.s.x + 18 >= max_x){
+        if(gorilla->physics.s.x + 18 >= termSize->x){
             engine->should_close = 1;
         }
     }
 }
 
 void init(Engine * engine){
-    initscr();
-    noecho();
-    curs_set(FALSE);
+    termInit();
 }
 
 void finish(Engine * engine){
-    endwin(); // Restore normal terminal behavior
+    termFinish();
 }
