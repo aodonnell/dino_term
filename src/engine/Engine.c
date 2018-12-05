@@ -52,7 +52,6 @@ void start(Engine * engine){
  */
 void loop(Engine * engine){
 
-<<<<<<< HEAD
     Thing * sprite = newThingFromFile("resources/dino.txt");
     Thing * ground = newThingFromFile("resources/terrain.txt");
 
@@ -62,9 +61,6 @@ void loop(Engine * engine){
     ground->physics.ds.y = 0;
     ground->physics.d2s.x = 0;
     ground->physics.d2s.y = 0;
-=======
-    Thing * dolphin = newThingFromFile("resources/dolphin.txt");
->>>>>>> 201282d0dfbe7639aca1c9e081c0e432b77c2803
 
     logger("term size: {%d, %d}\n", termSize.x, termSize.y);
 
@@ -72,25 +68,15 @@ void loop(Engine * engine){
 
         termClear();
 
-<<<<<<< HEAD
         drawThing(ground);
         drawThing(sprite);
 
         tickf(&sprite->physics);
-=======
-        drawThing(dolphin);
-
-        tickf(&dolphin->physics);
->>>>>>> 201282d0dfbe7639aca1c9e081c0e432b77c2803
 
         termRefresh();
         usleep(40000); // Shorter delay between movements
 
-<<<<<<< HEAD
         if(sprite->physics.s.x + 20 >= termSize.x){
-=======
-        if(dolphin->physics.s.x + 18 >= termSize.x){
->>>>>>> 201282d0dfbe7639aca1c9e081c0e432b77c2803
             engine->should_close = 1;
         }
     }
