@@ -12,11 +12,17 @@
 // XXX singleton?
 Engine * newEngine(int fps){
 
+    // allocate the engine
     Engine * engine = calloc(1, sizeof(Engine));
+    
+    // set the frames per second
     engine->fps = fps;
 
-    // engine->colors = has_colors();
+    // set the gameloop
+    // engine->gameloop = gameloop;
 
+    // TODO
+    // engine->colors = has_colors();
     // start_color();
     // init_pair(1, COLOR_BLUE, COLOR_BLACK);
 
@@ -72,13 +78,16 @@ void loop(Engine * engine){
         drawThing(sprite);
 
         tickf(&sprite->physics);
-
-        termRefresh();
-        usleep(40000); // Shorter delay between movements
-
+        
         if(sprite->physics.s.x + 20 >= termSize.x){
             engine->should_close = 1;
         }
+
+        termRefresh();
+
+        // Shorter delay between movements
+        usleep(40000); 
+
     }
 }
 

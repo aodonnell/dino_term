@@ -6,7 +6,10 @@
 #include "logger.h"
 
 void adjustTermSize(){
+    refresh();
     getmaxyx(stdscr, termSize.y, termSize.x);
+    logger("term size changed: {%d, %d}\n", termSize.x, termSize.y);
+
 }
 
 void termMaxSize(){
@@ -19,7 +22,12 @@ void termInit(){
 
     initscr();
     noecho();
+
+    // make the cursor invisible
     curs_set(FALSE);
+
+    // remove the delay on getch();
+    nodelay(stdscr,TRUE);
 
     // get the initial termSize
     termMaxSize();
@@ -27,6 +35,7 @@ void termInit(){
 
     // register termRefresh as the signal handler for SIGWINCH this doesn't really do what I think it does
     // (it gets called but the window size doesn't change)
+
     // signal(SIGWINCH, (void *)adjustTermSize);
 }
 
