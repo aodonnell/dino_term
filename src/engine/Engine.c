@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <ncurses.h>
 
+// todo ifdef windows
 #include "Engine.h"
 #include "Thing.h"
 #include "util/termlib.h"
@@ -46,9 +48,11 @@ void start(Engine * engine){
 /* 
  * check the time
  * 
+ * hanle input
+ * 
  * do everything we need to calculate the next screen
  * 
- * clear whatever we need to
+ * clear the current screen
  * 
  * draw whatever we need to
  * 
@@ -58,11 +62,12 @@ void start(Engine * engine){
  */
 void loop(Engine * engine){
 
-    Thing * sprite = newThingFromFile("resources/dino.txt");
+    // todo make these global?
+    Thing * dino = newThingFromFile("resources/dinoascii.txt");
     Thing * ground = newThingFromFile("resources/terrain.txt");
 
     ground->physics.s.x = 0;
-    ground->physics.s.y = 9;
+    ground->physics.s.y = 13;
     ground->physics.ds.x = 0;
     ground->physics.ds.y = 0;
     ground->physics.d2s.x = 0;
@@ -72,14 +77,39 @@ void loop(Engine * engine){
 
     while(!engine->should_close){
 
+        // handle input
+        // check to see if the escape char was pushed onto the buffer
+        if(getch() == '\033'){
+            // skip the '['
+            getch();
+
+            // check the key value 
+            switch(getch()){
+                case 'A':
+                    logger("Keypress up\n");
+                    break;
+                case 'B':
+                    logger("Keypress down\n");
+                    break;
+                case 'C':
+                    logger("Keypress right\n");
+                    break;
+                case 'D':
+                    logger("Keypress left\n");
+                    break;
+                default: 
+                    break;
+            }
+        } 
+
         termClear();
 
         drawThing(ground);
-        drawThing(sprite);
+        drawThing(dino);
 
-        tickf(&sprite->physics);
+        tickf(&dino->physics);
         
-        if(sprite->physics.s.x + 20 >= termSize.x){
+        if(dino->physics.s.x + 20 >= termSize.x){
             engine->should_close = 1;
         }
 

@@ -1,5 +1,14 @@
 #include "Physics.h"
 
+
+// up down left right
+enum direction{
+    U,
+    D,
+    L,
+    R,
+};
+
 void ticki(Physics2i * physics){
     if(physics->s.y - 19<0){
         physics->ds.y = -0.9*physics->ds.y;

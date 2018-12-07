@@ -7,6 +7,7 @@
 
 #include "Thing.h"
 
+
 Thing * newThing(){
     Thing * thing = calloc(1, sizeof(Thing));
 

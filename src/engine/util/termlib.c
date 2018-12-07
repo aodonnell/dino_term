@@ -27,7 +27,7 @@ void termInit(){
     curs_set(FALSE);
 
     // remove the delay on getch();
-    nodelay(stdscr,TRUE);
+    nodelay(stdscr, TRUE);
 
     // get the initial termSize
     termMaxSize();
