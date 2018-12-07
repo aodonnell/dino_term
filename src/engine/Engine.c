@@ -5,9 +5,11 @@
 
 // todo ifdef windows
 #include "Engine.h"
-#include "Thing.h"
+#include "things/Dino.h"
 #include "util/termlib.h"
 #include "util/logger.h"
+
+#define GROUND 5
 
 // Vec2i * termSize;
 
@@ -37,7 +39,7 @@ void destroyEngine(Engine * engine){
 
 void start(Engine * engine){
 
-    // Thing * dolphin = newThingFromFile("resources/dolphin.txt");
+    // Dino * dolphin = newDinoFromFile("resources/dolphin.txt");
     // return;
 
     init(engine);
@@ -50,7 +52,7 @@ void start(Engine * engine){
  * 
  * hanle input
  * 
- * do everything we need to calculate the next screen
+ * do everydino we need to calculate the next screen
  * 
  * clear the current screen
  * 
@@ -63,11 +65,11 @@ void start(Engine * engine){
 void loop(Engine * engine){
 
     // todo make these global?
-    Thing * dino = newThingFromFile("resources/dinoascii.txt");
-    Thing * ground = newThingFromFile("resources/terrain.txt");
+    Dino * dino = newDinoFromFile("resources/dinoascii.txt", GROUND);
+    Dino * ground = newDinoFromFile("resources/terrain.txt", GROUND);
 
     ground->physics.s.x = 0;
-    ground->physics.s.y = 13;
+    ground->physics.s.y = GROUND;
     ground->physics.ds.x = 0;
     ground->physics.ds.y = 0;
     ground->physics.d2s.x = 0;
@@ -104,10 +106,10 @@ void loop(Engine * engine){
 
         termClear();
 
-        drawThing(ground);
-        drawThing(dino);
+        drawDino(ground);
+        drawDino(dino);
 
-        tickf(&dino->physics);
+        tickPhysicsf(&dino->physics);
         
         if(dino->physics.s.x + 20 >= termSize.x){
             engine->should_close = 1;
@@ -116,7 +118,7 @@ void loop(Engine * engine){
         termRefresh();
 
         // Shorter delay between movements
-        usleep(40000); 
+        usleep(50000); 
 
     }
 }

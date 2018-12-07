@@ -1,5 +1,5 @@
-#ifndef COWBOT_H_
-#define COWBOT_H_
+#ifndef DINO_TERM_H_
+#define DINO_TERM_H_
 
 #include <stdio.h>
 #include <stdlib.h>

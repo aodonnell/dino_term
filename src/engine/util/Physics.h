@@ -15,8 +15,8 @@ typedef struct _physics2f {
     Vec2f d2s;
 } Physics2f;
 
-void ticki(Physics2i * physics);
+void tickPhysicsi(Physics2i * physics);
 
-void tickf(Physics2f * physics);
+void tickPhysicsf(Physics2f * physics);
 
 #endif

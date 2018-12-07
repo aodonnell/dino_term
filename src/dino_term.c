@@ -1,4 +1,4 @@
-#include "cowbot.h"
+#include "dino_term.h"
 
 int main(int argc, char * argv[]){
 

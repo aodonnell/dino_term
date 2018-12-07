@@ -1,6 +1,5 @@
 #include "Physics.h"
 
-
 // up down left right
 enum direction{
     U,
@@ -9,18 +8,12 @@ enum direction{
     R,
 };
 
-void ticki(Physics2i * physics){
-    if(physics->s.y - 19<0){
-        physics->ds.y = -0.9*physics->ds.y;
-    }
+void tickPhysicsi(Physics2i * physics){
     vacci(&physics->s, &physics->ds);
     vacci(&physics->ds, &physics->d2s);
 }
 
-void tickf(Physics2f * physics){
-    if(physics->s.y -12 <0){
-        physics->ds.y = -0.9*physics->ds.y;
-    }
+void tickPhysicsf(Physics2f * physics){
     vaccf(&physics->s, &physics->ds);
     vaccf(&physics->ds, &physics->d2s);
 }

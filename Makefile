@@ -2,7 +2,8 @@ CC = gcc
 
 csrc = $(wildcard src/*.c) \
  	   $(wildcard src/engine/*.c) \
- 	   $(wildcard src/engine/util/*.c) 
+ 	   $(wildcard src/engine/util/*.c) \
+ 	   $(wildcard src/engine/things/*.c) \
 
 obj = $(csrc:.c=.o)
 
@@ -12,7 +13,7 @@ LDFLAGS = -lncurses
 
 CFLAGS = -DDEBUG
 
-cowbot: $(obj)
+dino_term: $(obj)
 	$(CC) -o $@ $^ $(LDFLAGS) $(CFLAGS)
 
 .PHONY: clean
