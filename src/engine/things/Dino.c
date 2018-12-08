@@ -14,8 +14,9 @@ Dino * newDino(){
     return dino;
 };
 
-// todo handle filenotfound error (need to add some sort of error handling mechanism)
+// todo hardcode the sprite to avoid files
 // it would be cool to load the dino from a file once than store it in a resource header
+// like have a loader utility that writes c code to include a sprite.
 Dino * newDinoFromFile(const char * fname, int ground){
     Dino * dino = calloc(1, sizeof(Dino));
 
