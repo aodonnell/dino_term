@@ -36,7 +36,8 @@ Dino * newDinoFromFile(const char * fname, int ground){
     // we'd have all of the resources in a header or something.
     fscanf(fd, "%d %d %d", &dino->size.x, &dino->size.y, &dino->frames);
     
-    // get rid of the newline after the size
+    // get rid of the newlines after the size (HACKS)
+    getc(fd);
     getc(fd);
 
     // initialize the frames
@@ -45,18 +46,19 @@ Dino * newDinoFromFile(const char * fname, int ground){
     // initialize the lines
     for(int f = 0; f < dino->frames; f++){
         dino->lines[f] = calloc(dino->size.x, sizeof(char *));
+        
         for(int i = 0; i < dino->size.y; i++){
+
             dino->lines[f][i] = calloc(dino->size.x, sizeof(char));
 
             fgets(dino->lines[f][i], termSize.x, fd);
-
-            // remove trailing newline from fgets
+            // (MORE HACKS)
             strtok(dino->lines[f][i], "\n");
+
+            logger("Frame %d loaded line: %s",f, dino->lines[f][i]);
+
         }
     }
-
-
-    
 
     // init dummy physics
     dino->physics.s.x = 20;
