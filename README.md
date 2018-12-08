@@ -1,5 +1,5 @@
 # dino_term
-dino_term is a rendition of he chrome dinosour game developed in C that lives in your terminal. I'm developing a basic game engine in C that leverages the ncurses library to handle terminal rendering in ascii characters. I'm currently developing a few demos as I work on basic pysics and mechanics. 
+dino_term is a rendition of he chrome dinosour game that lives in your terminal. I'm developing a basic game engine in C that leverages the ncurses library to handle terminal rendering in ascii characters. I'm currently developing a few demos as I work on basic pysics and mechanics. 
 
 # Running the Demo
 dino_term is built using make. You can run the demo on your POSIX system by cloning the repository and running the following two commands:
