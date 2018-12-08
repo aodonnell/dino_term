@@ -36,7 +36,6 @@ void destroyEngine(Engine * engine){
 }
 
 void start(Engine * engine){
-
     init(engine);
     loop(engine);
     finish(engine);
@@ -94,6 +93,7 @@ void loop(Engine * engine){
         } 
 
         tickDino(dino);
+        tickGround(ground);
         
         termClear();
         // draw everything here

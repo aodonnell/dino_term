@@ -55,7 +55,7 @@ Dino * newDinoFromFile(const char * fname, int ground){
             // (MORE HACKS)
             strtok(dino->lines[f][i], "\n");
 
-            logger("Frame %d loaded line: %s",f, dino->lines[f][i]);
+            // logger("Frame %d loaded line: %s\n",f, dino->lines[f][i]);
 
         }
     }
@@ -118,6 +118,8 @@ void drawDino(const Dino * dino){
 void tickDino(Dino * dino){
 
     static int animation_counter;
+    
+    // if the dino is on the ground, animate the walking cycle
     if(dino->physics.s.y == _ground + dino->size.y - 1){
         if(!(animation_counter%5) && animation_counter){
             cycleAnimationDino(dino);    
@@ -126,9 +128,6 @@ void tickDino(Dino * dino){
         else{
             animation_counter++;
         }
-    }
-    else{
-        dino->frame = 0;
     }
 
     tickPhysicsf(&dino->physics);
@@ -150,7 +149,8 @@ void set_ground(int ground){
 
 void jumpDino(Dino * dino){
     if(dino->canJump){
-        logger("Jumping\n");
+        // logger("Jumping\n");
+        dino->frame = 0;
         dino->physics.ds.y=6;
         dino->physics.d2s.y=-.9;
         dino->canJump = 0;
@@ -166,5 +166,5 @@ void cycleAnimationDino(Dino * dino){
         walkCycle = 1;
     }
     dino->frame = walkCycle;
-    logger("switching to frame %d\n", dino->frame);
+    // logger("switching to frame %d\n", dino->frame);
 }
