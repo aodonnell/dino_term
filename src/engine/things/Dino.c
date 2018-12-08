@@ -85,7 +85,6 @@ void destroyDino(Dino * dino){
 }
 
 void drawDinoHere(const Dino * dino, const Vec2i * here){
-    // in our dwg library we can have max_y and max_x as protected global variables or somedino
     Vec2i adjust = vec2i((int)dino->physics.s.x, (int)dino->physics.s.y); 
     for(int i = 0; i < dino->size.y; i++){
         drawLine(dino->lines[i], &adjust);
@@ -94,7 +93,6 @@ void drawDinoHere(const Dino * dino, const Vec2i * here){
 }
 
 void drawDino(const Dino * dino){
-    // in our dwg library we can have max_y and max_x as protected global variables or somedino
     Vec2i adjust = vec2i((int)dino->physics.s.x, (int)dino->physics.s.y); 
     for(int i = 0; i < dino->size.y; i++){
         drawLine(dino->lines[i], &adjust);
