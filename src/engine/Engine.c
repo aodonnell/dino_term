@@ -6,6 +6,7 @@
 // todo ifdef windows
 #include "Engine.h"
 #include "things/Dino.h"
+#include "things/Ground.h"
 #include "util/termlib.h"
 #include "util/logger.h"
 
@@ -22,9 +23,6 @@ Engine * newEngine(int fps){
     // set the frames per second
     engine->fps = fps;
 
-    // set the gameloop
-    // engine->gameloop = gameloop;
-
     // TODO
     // engine->colors = has_colors();
     // start_color();
@@ -38,9 +36,6 @@ void destroyEngine(Engine * engine){
 }
 
 void start(Engine * engine){
-
-    // Dino * dolphin = newDinoFromFile("resources/dolphin.txt");
-    // return;
 
     init(engine);
     loop(engine);
@@ -66,14 +61,7 @@ void loop(Engine * engine){
 
     // todo make these global?
     Dino * dino = newDinoFromFile("resources/dinoascii.txt", GROUND);
-    Dino * ground = newDinoFromFile("resources/terrain.txt", GROUND);
-
-    ground->physics.s.x = 0;
-    ground->physics.s.y = GROUND;
-    ground->physics.ds.x = 0;
-    ground->physics.ds.y = 0;
-    ground->physics.d2s.x = 0;
-    ground->physics.d2s.y = 0;
+    Ground * ground = newGroundFromFile("resources/terrain.txt");
 
     logger("term size: {%d, %d}\n", termSize.x, termSize.y);
 
@@ -88,6 +76,7 @@ void loop(Engine * engine){
             // check the key value 
             switch(getch()){
                 case 'A':
+                    jumpDino(dino);
                     logger("Keypress up\n");
                     break;
                 case 'B':
@@ -104,21 +93,17 @@ void loop(Engine * engine){
             }
         } 
 
-        termClear();
-
-        drawDino(ground);
-        drawDino(dino);
-
-        tickPhysicsf(&dino->physics);
+        tickDino(dino);
         
-        if(dino->physics.s.x + 20 >= termSize.x){
-            engine->should_close = 1;
-        }
-
+        termClear();
+        // draw everything here
+        drawGround(ground);
+        drawDino(dino);
+        // drawing ends
         termRefresh();
 
-        // Shorter delay between movements
-        usleep(50000); 
+        // delay between movements
+        usleep(40000); 
 
     }
 }
