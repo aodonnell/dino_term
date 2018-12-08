@@ -6,6 +6,7 @@
 // todo ifdef windows
 #include "Engine.h"
 #include "things/Dino.h"
+#include "things/Ground.h"
 #include "util/termlib.h"
 #include "util/logger.h"
 
@@ -66,14 +67,7 @@ void loop(Engine * engine){
 
     // todo make these global?
     Dino * dino = newDinoFromFile("resources/dinoascii.txt", GROUND);
-    Dino * ground = newDinoFromFile("resources/terrain.txt", GROUND);
-
-    ground->physics.s.x = 0;
-    ground->physics.s.y = GROUND;
-    ground->physics.ds.x = 0;
-    ground->physics.ds.y = 0;
-    ground->physics.d2s.x = 0;
-    ground->physics.d2s.y = 0;
+    Ground * ground = newGroundFromFile("resources/terrain.txt");
 
     logger("term size: {%d, %d}\n", termSize.x, termSize.y);
 
@@ -106,7 +100,7 @@ void loop(Engine * engine){
 
         termClear();
 
-        drawDino(ground);
+        drawGround(ground);
         drawDino(dino);
 
         tickPhysicsf(&dino->physics);
