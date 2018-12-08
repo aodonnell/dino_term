@@ -34,23 +34,29 @@ Dino * newDinoFromFile(const char * fname, int ground){
     // XXX: it would be nicer to calculate it. It would make it way easier to make resources.
     // I guess ideally we wouldn't have to load in from files anyway
     // we'd have all of the resources in a header or something.
-    fscanf(fd, "%d %d", &dino->size.x, &dino->size.y);
+    fscanf(fd, "%d %d %d", &dino->size.x, &dino->size.y, &dino->frames);
     
     // get rid of the newline after the size
     getc(fd);
 
+    // initialize the frames
+    dino->lines = calloc(dino->frames, sizeof(char **));
+
     // initialize the lines
+    for(int f = 0; f < dino->frames; f++){
+        dino->lines[f] = calloc(dino->size.x, sizeof(char *));
+        for(int i = 0; i < dino->size.y; i++){
+            dino->lines[f][i] = calloc(dino->size.x, sizeof(char));
 
-    dino->lines = calloc(dino->size.x, sizeof(char *));
+            fgets(dino->lines[f][i], termSize.x, fd);
 
-    for(int i = 0; i < dino->size.y; i++){
-        dino->lines[i] = calloc(dino->size.x, sizeof(char));
-
-        fgets(dino->lines[i], termSize.x, fd);
-
-        // remove trailing newline from fgets
-        strtok(dino->lines[i], "\n");
+            // remove trailing newline from fgets
+            strtok(dino->lines[f][i], "\n");
+        }
     }
+
+
+    
 
     // init dummy physics
     dino->physics.s.x = 20;
@@ -71,8 +77,15 @@ Dino * newDinoFromFile(const char * fname, int ground){
 void destroyDino(Dino * dino){
     if(dino){
         if(dino->lines){
-            for(int i=0; i<dino->size.y; i++){
+            for(int i=0; i<dino->frames; i++){
                 if(dino->lines[i]){
+                    for(int j=0; j<dino->size.y; j++){
+                        if(dino->lines[i][j]){
+                            free(dino->lines[i][j]);
+                        }else{
+                            break;
+                        }
+                    }
                     free(dino->lines[i]);
                 }else{
                     break;
@@ -87,7 +100,7 @@ void destroyDino(Dino * dino){
 void drawDinoHere(const Dino * dino, const Vec2i * here){
     Vec2i adjust = vec2i((int)dino->physics.s.x, (int)dino->physics.s.y); 
     for(int i = 0; i < dino->size.y; i++){
-        drawLine(dino->lines[i], &adjust);
+        drawLine(dino->lines[dino->frame][i], &adjust);
         adjust.y--;
     }
 }
@@ -95,12 +108,26 @@ void drawDinoHere(const Dino * dino, const Vec2i * here){
 void drawDino(const Dino * dino){
     Vec2i adjust = vec2i((int)dino->physics.s.x, (int)dino->physics.s.y); 
     for(int i = 0; i < dino->size.y; i++){
-        drawLine(dino->lines[i], &adjust);
+        drawLine(dino->lines[dino->frame][i], &adjust);
         adjust.y--;
     }
 }
 
 void tickDino(Dino * dino){
+
+    static int animation_counter;
+    if(dino->physics.s.y == _ground + dino->size.y - 1){
+        if(!(animation_counter%5) && animation_counter){
+            cycleAnimationDino(dino);    
+            animation_counter = 0;
+        }
+        else{
+            animation_counter++;
+        }
+    }
+    else{
+        dino->frame = 0;
+    }
 
     tickPhysicsf(&dino->physics);
 
@@ -111,6 +138,7 @@ void tickDino(Dino * dino){
         dino->physics.d2s.y = 0;
         dino->physics.ds.y = 0;
         dino->canJump = 1;
+        cycleAnimationDino(dino);
     }
 }
 
@@ -125,4 +153,16 @@ void jumpDino(Dino * dino){
         dino->physics.d2s.y=-.9;
         dino->canJump = 0;
     }
+}
+
+void cycleAnimationDino(Dino * dino){
+    static int walkCycle = 1;
+    if(walkCycle == 1){
+        walkCycle = 2;
+    }
+    else{
+        walkCycle = 1;
+    }
+    dino->frame = walkCycle;
+    logger("switching to frame %d\n", dino->frame);
 }

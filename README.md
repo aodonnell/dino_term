@@ -5,7 +5,7 @@ dino_term is a rendition of he chrome dinosour game developed in C that lives in
 dino_term is built using make. You can run the demo on your POSIX system by cloning the repository and running the following two commands:
 ``` console
 user@machine:~/dino_term$ make
-user@machine:~/dino_term$ dino_term
+user@machine:~/dino_term$ ./dino_term
 ```
 
 dino_term is a working title and I'm open to suggestions
