@@ -44,6 +44,7 @@ void destroyGround(Ground * ground){
 };
 
 void drawGround(Ground * ground){
+    // todo change me to match the cycleGround function
     Vec2i adjust = vec2i(0, ground->size.y); 
     for(int i = 0; i < ground->size.y; i++){
         drawLine(ground->lines[i], &adjust);
@@ -62,5 +63,6 @@ void cycleGround(Ground * ground){
      * 
      * to cycle we just swap the null with the adjacent character 
      * then move the pointer to the next col
+     * (this may not even need to be a function)
      */
 }

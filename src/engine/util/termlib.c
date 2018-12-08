@@ -53,7 +53,6 @@ void termRefresh(){
 
 // TODO make spaces until you hit the first nonspace transparent
 void drawLine(char * line, Vec2i * pos){
-    logger("print pos: {%d, %d}\n", pos->x, pos->y);
     mvprintw(termSize.y - (int) pos->y, (int) pos->x, line); 
 }
 

@@ -23,4 +23,6 @@ void drawDinoHere(const Dino * dino, const Vec2i * here);
 
 void tickDino(Dino * dino);
 
+void jumpDino(Dino * dino);
+
 #endif

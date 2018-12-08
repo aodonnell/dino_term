@@ -23,9 +23,6 @@ Engine * newEngine(int fps){
     // set the frames per second
     engine->fps = fps;
 
-    // set the gameloop
-    // engine->gameloop = gameloop;
-
     // TODO
     // engine->colors = has_colors();
     // start_color();
@@ -39,9 +36,6 @@ void destroyEngine(Engine * engine){
 }
 
 void start(Engine * engine){
-
-    // Dino * dolphin = newDinoFromFile("resources/dolphin.txt");
-    // return;
 
     init(engine);
     loop(engine);
@@ -82,6 +76,7 @@ void loop(Engine * engine){
             // check the key value 
             switch(getch()){
                 case 'A':
+                    jumpDino(dino);
                     logger("Keypress up\n");
                     break;
                 case 'B':
@@ -98,21 +93,17 @@ void loop(Engine * engine){
             }
         } 
 
+        tickDino(dino);
+        
         termClear();
-
+        // draw everything here
         drawGround(ground);
         drawDino(dino);
-
-        tickPhysicsf(&dino->physics);
-        
-        if(dino->physics.s.x + 20 >= termSize.x){
-            engine->should_close = 1;
-        }
-
+        // drawing ends
         termRefresh();
 
-        // Shorter delay between movements
-        usleep(50000); 
+        // delay between movements
+        usleep(40000); 
 
     }
 }

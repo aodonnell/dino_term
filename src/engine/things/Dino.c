@@ -7,7 +7,7 @@
 
 #include "Dino.h"
 
-int ground;
+int _ground;
 
 Dino * newDino(){
     Dino * dino = calloc(1, sizeof(Dino));
@@ -33,7 +33,7 @@ Dino * newDinoFromFile(const char * fname, int ground){
 
     // XXX: it would be nicer to calculate it. It would make it way easier to make resources.
     // I guess ideally we wouldn't have to load in from files anyway
-    // we'd have all of the resources in a header or somedino.
+    // we'd have all of the resources in a header or something.
     fscanf(fd, "%d %d", &dino->size.x, &dino->size.y);
     
     // get rid of the newline after the size
@@ -59,6 +59,10 @@ Dino * newDinoFromFile(const char * fname, int ground){
     dino->physics.ds.y = 0;    
     dino->physics.d2s.x = 0;
     dino->physics.d2s.y = 0;
+
+    dino->canJump = 1;
+
+    _ground = ground;
 
     fclose(fd);
     return dino;
@@ -100,14 +104,27 @@ void drawDino(const Dino * dino){
 
 void tickDino(Dino * dino){
 
+    tickPhysicsf(&dino->physics);
+
     // stop if you hit the ground
-    if(dino->physics.s.y == ground + dino->size.y){
+    if(dino->physics.s.y < (_ground + dino->size.y - 1)){
+        logger("Hit the ground!\n"); 
+        dino->physics.s.y = _ground + dino->size.y - 1;
+        dino->physics.d2s.y = 0;
         dino->physics.ds.y = 0;
         dino->canJump = 1;
     }
-    tickPhysicsf(&dino->physics);
 }
 
-void set_ground(int grnd){
-    ground = grnd;
+void set_ground(int ground){
+    _ground = ground;
+}
+
+void jumpDino(Dino * dino){
+    if(dino->canJump){
+        logger("Jumping\n");
+        dino->physics.ds.y=6;
+        dino->physics.d2s.y=-.9;
+        dino->canJump = 0;
+    }
 }
