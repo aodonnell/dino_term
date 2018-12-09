@@ -74,19 +74,19 @@ void loop(Engine * engine){
 
             // check the key value 
             switch(getch()){
-                case 'A':
+                case 'A': // up
                     jumpDino(dino);
                     logger("Keypress up\n");
                     break;
-                case 'B':
+                case 'B': // down
                     logger("Keypress down\n");
                     break;
-                case 'C':
+                case 'C': // right
                     logger("Keypress right\n");
                     break;
                 case 'D':
                     logger("Keypress left\n");
-                    break;
+                    break; // left
                 default: 
                     break;
             }
