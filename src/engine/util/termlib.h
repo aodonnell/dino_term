@@ -15,6 +15,8 @@ void termRefresh();
 
 void drawLine(char * line, Vec2i * pos);
 
+void drawLineAlpha(char * line, Vec2i * pos);
+
 const Vec2i * getTermSize();
 
 #endif

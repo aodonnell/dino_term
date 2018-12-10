@@ -24,19 +24,20 @@ Dino * newDinoFromFile(const char * fname, int ground){
 
     if(!fd){
         logbroke("FILE NOT FOUND\n");
+        logger("FILE NOT FOUND: %d\n", fname);
         exit(EXIT_FAILURE);
     }
 
     logger("opened: %s\n", fname);
 
-    // parse the dimensions of the dino
+    // parse the dimensions of the dino and the number of frames of the sprite
 
     // XXX: it would be nicer to calculate it. It would make it way easier to make resources.
     // I guess ideally we wouldn't have to load in from files anyway
     // we'd have all of the resources in a header or something.
     fscanf(fd, "%d %d %d", &dino->size.x, &dino->size.y, &dino->frames);
     
-    // get rid of the newlines after the size (HACKS)
+    // get rid of the newlines after the size
     getc(fd);
     getc(fd);
 
@@ -100,9 +101,9 @@ void destroyDino(Dino * dino){
 }
 
 void drawDinoHere(const Dino * dino, const Vec2i * here){
-    Vec2i adjust = vec2i((int)dino->physics.s.x, (int)dino->physics.s.y); 
+    Vec2i adjust = vec2i(here->x, here->y); 
     for(int i = 0; i < dino->size.y; i++){
-        drawLine(dino->lines[dino->frame][i], &adjust);
+        drawLineAlpha(dino->lines[dino->frame][i], &adjust);
         adjust.y--;
     }
 }
@@ -110,7 +111,7 @@ void drawDinoHere(const Dino * dino, const Vec2i * here){
 void drawDino(const Dino * dino){
     Vec2i adjust = vec2i((int)dino->physics.s.x, (int)dino->physics.s.y); 
     for(int i = 0; i < dino->size.y; i++){
-        drawLine(dino->lines[dino->frame][i], &adjust);
+        drawLineAlpha(dino->lines[dino->frame][i], &adjust);
         adjust.y--;
     }
 }
