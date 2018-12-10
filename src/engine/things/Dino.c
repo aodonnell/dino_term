@@ -151,8 +151,8 @@ void jumpDino(Dino * dino){
     if(dino->canJump){
         // logger("Jumping\n");
         dino->frame = 0;
-        dino->physics.ds.y=6;
-        dino->physics.d2s.y=-.9;
+        dino->physics.ds.y=4.7;
+        dino->physics.d2s.y=-.55;
         dino->canJump = 0;
     }
 }

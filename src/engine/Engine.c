@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <ncurses.h>
+#include <time.h>
 
 // todo ifdef windows
 #include "Engine.h"
@@ -64,7 +65,13 @@ void loop(Engine * engine){
 
     logger("term size: {%d, %d}\n", termSize.x, termSize.y);
 
+    clock_t frame_clock;
+    int delay;
+
     while(!engine->should_close){
+
+        // check time
+        frame_clock = clock();
 
         // handle input
         // check to see if the escape char was pushed onto the buffer
@@ -98,8 +105,13 @@ void loop(Engine * engine){
         // drawing ends
         termRefresh();
 
+        frame_clock = clock() - frame_clock;
+
         // delay between movements
-        usleep(30000); 
+
+        delay = (int)((1/(double)engine->fps - ((double)frame_clock)/CLOCKS_PER_SEC)*1e6);
+        // logger("delay: <%d>, time to calc frame: <%2.10f>, spf: <%2.2f>\n", delay, ((double)frame_clock)/CLOCKS_PER_SEC, 1/(double)engine->fps);
+        usleep(delay); 
 
     }
 }
