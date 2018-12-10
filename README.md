@@ -23,4 +23,4 @@ dino_term is a working title and I'm open to suggestions
 # Progress
 There is currently a framework that provides basic physics and user input. The next step is to use these tools to implement obstacles and the rest of the game mechanics. 
 
-![alt text](https://github.com/alexjodonnell/dino_term/blob/master/docs/Dino%20Screeny.png)
+<p align="center"><img src="https://github.com/alexjodonnell/dino_term/blob/master/docs/Dino1.gif" width="335" height="229" /></p>
