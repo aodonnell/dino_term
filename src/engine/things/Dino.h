@@ -8,7 +8,9 @@ typedef struct _dino {
     Vec2i size;
     Physics2f physics;
     int canJump;
-    char ** lines;
+    int frames;
+    int frame;
+    char *** lines;
 } Dino;
 
 Dino * newDino();
@@ -24,5 +26,7 @@ void drawDinoHere(const Dino * dino, const Vec2i * here);
 void tickDino(Dino * dino);
 
 void jumpDino(Dino * dino);
+
+void cycleAnimationDino(Dino * dino);
 
 #endif

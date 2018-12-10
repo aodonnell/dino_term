@@ -3,7 +3,10 @@
 
 
 typedef struct _ground {
-    Vec2i size;
+    Vec2i size; 
+    int terrainSize;
+    int terrainPosition;
+    int terrainEnd;
     char ** lines;
 } Ground;
 
@@ -14,5 +17,7 @@ void destroyGround(Ground * ground);
 void drawGround(Ground * ground);
 
 void cycleGround(Ground * ground);
+
+void tickGround(Ground * ground);
 
 #endif

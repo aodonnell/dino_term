@@ -36,7 +36,6 @@ void destroyEngine(Engine * engine){
 }
 
 void start(Engine * engine){
-
     init(engine);
     loop(engine);
     finish(engine);
@@ -75,25 +74,22 @@ void loop(Engine * engine){
 
             // check the key value 
             switch(getch()){
-                case 'A':
+                case 'A': // up
                     jumpDino(dino);
-                    logger("Keypress up\n");
                     break;
-                case 'B':
-                    logger("Keypress down\n");
+                case 'B': // down
                     break;
-                case 'C':
-                    logger("Keypress right\n");
+                case 'C': // right
                     break;
                 case 'D':
-                    logger("Keypress left\n");
-                    break;
+                    break; // left
                 default: 
                     break;
             }
         } 
 
         tickDino(dino);
+        tickGround(ground);
         
         termClear();
         // draw everything here
@@ -103,7 +99,7 @@ void loop(Engine * engine){
         termRefresh();
 
         // delay between movements
-        usleep(40000); 
+        usleep(30000); 
 
     }
 }
