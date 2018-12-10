@@ -76,16 +76,12 @@ void loop(Engine * engine){
             switch(getch()){
                 case 'A': // up
                     jumpDino(dino);
-                    logger("Keypress up\n");
                     break;
                 case 'B': // down
-                    logger("Keypress down\n");
                     break;
                 case 'C': // right
-                    logger("Keypress right\n");
                     break;
                 case 'D':
-                    logger("Keypress left\n");
                     break; // left
                 default: 
                     break;
@@ -103,7 +99,7 @@ void loop(Engine * engine){
         termRefresh();
 
         // delay between movements
-        usleep(40000); 
+        usleep(30000); 
 
     }
 }

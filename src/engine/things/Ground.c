@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 #include "../util/termlib.h"
 #include "../util/logger.h"
@@ -18,21 +19,20 @@ Ground * newGroundFromFile(const char * fname){
     logger("opened: %s\n", fname);
     fscanf(fd, "%d %d", &ground->size.x, &ground->size.y);    
     getc(fd);
-    getc(fd);
+    // getc(fd);
     ground->lines = calloc(ground->size.x, sizeof(char *));
     for(int i = 0; i < ground->size.y; i++){
         // allocate 1 extra byte to store the extra null that lets us cycle through the ground
         ground->lines[i] = calloc(ground->size.x+1, sizeof(char));
         fgets((ground->lines[i]+1), ground->size.x, fd);
+        logger("loaded: <%s>", ground->lines[i]+1);
         ground->lines[i][0] = '\0';
         strtok(ground->lines[i], "\n");
-        logger("loaded line: <%s>\n", ground->lines[i]+1);
-        logger("stored as: <%s>\n", ground->lines[i]);
     }
     fclose(fd);
     ground->terrainSize = termSize.x;
-    ground->cyclePosition = ground->size.x - ground->terrainSize;
-    logger("ground size: <%d,%d>, line len: <%d>, terrain size: <%d>\n",ground->size.x,ground->size.y, strlen(ground->lines[0] + ground->cyclePosition), ground->terrainSize);
+    ground->terrainPosition = ground->size.x - ground->terrainSize;
+    ground->terrainEnd = 0;
     return ground;
 };
 
@@ -54,18 +54,28 @@ void destroyGround(Ground * ground){
 
 void drawGround(Ground * ground){
     // todo change me to match the cycleGround function
-    Vec2i adjust = vec2i(0, ground->size.y); 
-    for(int i = 0; i < ground->size.y; i++){
-        adjust.x = 0;
-        if((ground->cyclePosition + ground->terrainSize) < ground->size.y){
-            drawLine((ground->lines[i]+ground->cyclePosition), &adjust);
+    Vec2i a1 = vec2i(0, ground->size.y); 
+    // logger("c: <%s>\n", c);
+   
+    if(ground->terrainEnd > ground->terrainPosition){
+        for(int i = 0; i < ground->size.y; i++){
+            drawLine((ground->lines[i]+ground->terrainPosition), &a1);
+            a1.y--;
         }
-        else{
-            drawLine((ground->lines[i]+ground->cyclePosition), &adjust);
-            adjust.x = ground->cyclePosition;
-            drawLine(ground->lines[i], &adjust);
-        };
-        adjust.y--;
+    }
+    else
+    {
+
+        Vec2i a2 = vec2i(ground->terrainSize-1-ground->terrainEnd, ground->size.y); 
+        // int l1 = strlen(ground->lines[0]+ground->terrainPosition);
+        // int l2 = strlen(ground->lines[0]);
+        logger("a2.x: <%d>, position: <%d>\n", a2.x, ground->terrainPosition);
+        for(int i = 0; i < ground->size.y; i++){
+            drawLine((ground->lines[i]+ground->terrainPosition), &a1);
+            drawLine(ground->lines[i], &a2);
+            a1.y--;
+            a2.y--;
+        }
     }
 };
 
@@ -91,32 +101,30 @@ void cycleGround(Ground * ground){
 
     char dummy;
 
-    // if the cycle is at it's end (one before the actual null)
-    if(ground->cyclePosition >= (ground->size.x-ground->terrainSize)){
-        // swap the null with the beginning
-        for(int i=0; i<ground->size.y; i++){
-            // logger("before swap; <%c>, <%c>\n", ground->lines[i][0], ground->lines[i][ground->size.x]);
-            dummy = ground->lines[i][0];
-            ground->lines[i][0] = ground->lines[i][ground->size.x];
-            ground->lines[i][ground->size.x] = dummy;
-            // logger("after swap; <%c>, <%c>\n", ground->lines[i][0], ground->lines[i][ground->size.x]);
-            
-        }
+    // fixme then end should always be null
+    // assert(!ground->lines[0][ground->terrainEnd]);
 
-        //reset the cycle
-        ground->cyclePosition = 1;
-        
+    if(ground->terrainEnd == ground->size.x-1){
+        // swap the null with the beginning once the cycle is complete
+        for(int i=0; i<ground->size.y; i++){
+            dummy = ground->lines[i][0];
+            ground->lines[i][0] = ground->lines[i][ground->terrainEnd-1];
+            ground->lines[i][ground->terrainEnd-1] = dummy;
+        }
     }
     else{
-        // otherwise swap the null before cycle position with adjacent characters
-        for(int i=ground->cyclePosition; i<ground->size.y-1; i++){
-            // fixme
-            dummy = ground->lines[i][i-1];
-            ground->lines[i][i-1] = ground->lines[i][i];
-            ground->lines[i][i-1] = dummy;
+        for(int i=0; i<ground->size.y; i++){
+            dummy = ground->lines[i][ground->terrainEnd];
+            ground->lines[i][ground->terrainEnd] = ground->lines[i][ground->terrainEnd+1];
+            ground->lines[i][ground->terrainEnd+1] = dummy;
         }
-        ground->cyclePosition++;
     }
+    ground->terrainPosition=(ground->terrainPosition+1)%(ground->size.x);
+    ground->terrainEnd=(ground->terrainEnd+1)%(ground->size.x);
+
+
+    // logger("ground: %d, end: %d\n", ground->terrainPosition, ground->terrainEnd);
+
 }
 
 void tickGround(Ground * ground){

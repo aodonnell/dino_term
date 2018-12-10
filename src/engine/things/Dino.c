@@ -134,7 +134,6 @@ void tickDino(Dino * dino){
 
     // stop if you hit the ground
     if(dino->physics.s.y < (_ground + dino->size.y - 1)){
-        logger("Hit the ground!\n"); 
         dino->physics.s.y = _ground + dino->size.y - 1;
         dino->physics.d2s.y = 0;
         dino->physics.ds.y = 0;

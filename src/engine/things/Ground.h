@@ -5,7 +5,8 @@
 typedef struct _ground {
     Vec2i size; 
     int terrainSize;
-    int cyclePosition;
+    int terrainPosition;
+    int terrainEnd;
     char ** lines;
 } Ground;
 
