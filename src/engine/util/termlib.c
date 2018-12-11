@@ -51,9 +51,21 @@ void termRefresh(){
     refresh();
 }
 
-// TODO make spaces until you hit the first nonspace transparent
 void drawLine(char * line, Vec2i * pos){
     mvprintw(termSize.y - (int) pos->y, (int) pos->x, line); 
+}
+
+void drawLineAlpha(char * line, Vec2i * pos){
+
+    Vec2i adjust = vec2i(pos->x, pos->y);
+
+    char * p = line;
+    while(*p == ' '){
+        p++;
+        adjust.x++;
+    }
+
+    mvprintw(termSize.y - adjust.y, adjust.x, p); 
 }
 
 const Vec2i * getTermSize(){
