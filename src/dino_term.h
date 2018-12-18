@@ -8,6 +8,6 @@
 #include "engine/Engine.h"
 #include "engine/util/logger.h"
 
-#define FPS 60
+#define FPS 50
 
 #endif
