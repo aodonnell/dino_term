@@ -13,10 +13,9 @@ Scene * newSceneFromFile(const char * fname){
     Scene * scene = calloc(1, sizeof(Scene));
     FILE * fd = fopen(fname, "r");
     if(!fd){
-        logbroke("FILE NOT FOUND\n");
+        logger("file not found: %s\n", fname);
         exit(EXIT_FAILURE);
     }
-    logger("opened: %s\n", fname);
     fscanf(fd, "%d %d", &scene->size.x, &scene->size.y);    
     getc(fd);
     // getc(fd);
@@ -25,7 +24,6 @@ Scene * newSceneFromFile(const char * fname){
         // allocate 1 extra byte to store the extra null that lets us cycle through the scene
         scene->lines[i] = calloc(scene->size.x+1, sizeof(char));
         fgets((scene->lines[i]+1), scene->size.x, fd);
-        logger("loaded: <%s>", scene->lines[i]+1);
         scene->lines[i][0] = '\0';
         strtok(scene->lines[i], "\n");
     }
@@ -65,11 +63,7 @@ void drawScene(Scene * scene){
     }
     else
     {
-
         Vec2i a2 = vec2i(scene->terrainSize-1-scene->terrainEnd, scene->size.y); 
-        // int l1 = strlen(scene->lines[0]+scene->terrainPosition);
-        // int l2 = strlen(scene->lines[0]);
-        logger("a2.x: <%d>, position: <%d>\n", a2.x, scene->terrainPosition);
         for(int i = 0; i < scene->size.y; i++){
             drawLine((scene->lines[i]+scene->terrainPosition), &a1);
             drawLine(scene->lines[i], &a2);

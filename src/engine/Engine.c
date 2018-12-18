@@ -11,6 +11,8 @@
 #include "util/termlib.h"
 #include "util/logger.h"
 
+#include "things/Cactus.h"
+
 #define GROUND 5
 
 // Vec2i * termSize;
@@ -59,14 +61,18 @@ void start(Engine * engine){
  */
 void loop(Engine * engine){
 
-    // todo make these global?
     Dino * dino = newDinoFromFile("resources/dinoascii.txt", GROUND);
     Scene * scene = newSceneFromFile("resources/terrain.txt");
+    Cactus * cactus = newCactus();
 
     logger("term size: {%d, %d}\n", termSize.x, termSize.y);
 
     clock_t frame_clock;
     int delay;
+
+    // fixme: remove me
+    Vec2i here = vec2i(50, 20);
+
 
     while(!engine->should_close){
 
@@ -102,6 +108,7 @@ void loop(Engine * engine){
         // draw everything here
         drawScene(scene);
         drawDino(dino);
+        drawCactusHere(cactus, &here);
         // drawing ends
         termRefresh();
 

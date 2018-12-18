@@ -13,9 +13,11 @@ void termClear();
 
 void termRefresh();
 
-void drawLine(char * line, Vec2i * pos);
+void drawLine(char * const line, const Vec2i * pos);
 
-void drawLineAlpha(char * line, Vec2i * pos);
+void drawLineAlpha(char * const line, const Vec2i * pos);
+
+void drawRawAlpha(char * const lines, int size, const Vec2i * pos);
 
 const Vec2i * getTermSize();
 

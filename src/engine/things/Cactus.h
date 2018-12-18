@@ -1,6 +1,8 @@
 #ifndef CACTUS_H_
 #define CACTUS_H_
 
+#include <stdbool.h>
+
 #include "../util/Geometry.h"
 #include "../util/Physics.h"
 #include "Dino.h"

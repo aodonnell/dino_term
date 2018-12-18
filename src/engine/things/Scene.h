@@ -1,5 +1,5 @@
-#ifndef GROUND_H_
-#define GROUND_H_
+#ifndef SCENE_H_
+#define SCENE_H_
 
 #include "../util/Geometry.h"
 

@@ -1,4 +1,5 @@
 #include <ncurses.h>
+#include <string.h>
 #include <signal.h>
 #include <locale.h>
 
@@ -51,11 +52,11 @@ void termRefresh(){
     refresh();
 }
 
-void drawLine(char * line, Vec2i * pos){
+void drawLine(char * const line, const Vec2i * pos){
     mvprintw(termSize.y - (int) pos->y, (int) pos->x, line); 
 }
 
-void drawLineAlpha(char * line, Vec2i * pos){
+void drawLineAlpha(char * const line, const Vec2i * pos){
 
     Vec2i adjust = vec2i(pos->x, pos->y);
 
@@ -66,6 +67,32 @@ void drawLineAlpha(char * line, Vec2i * pos){
     }
 
     mvprintw(termSize.y - adjust.y, adjust.x, p); 
+}
+
+// size = number of null characters in the raw string
+void drawRawAlpha(char * const lines, int size, const Vec2i * pos){
+
+    char * p = lines;
+
+    // for each null, there is a line (remember to adjust the y)
+    for(int i = 0; ; i++){
+        
+        int adjustx = pos->x;
+
+        while(*p == ' '){
+            p++;
+            adjustx++;
+        }
+
+        mvprintw(termSize.y - (pos->y - i), adjustx, p);
+
+        if(i<size){
+            p += strlen(p)+1;
+            continue;
+        } else {
+            break;
+        }
+    }
 }
 
 const Vec2i * getTermSize(){
