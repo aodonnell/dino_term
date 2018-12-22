@@ -6,6 +6,7 @@
 typedef struct _scene {
     Vec2i size; 
     int terrainSize;
+    
     int terrainPosition;
     int terrainEnd;
     char ** lines;

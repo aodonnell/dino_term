@@ -6,7 +6,6 @@
 #include "../util/Geometry.h"
 #include "Sprite.h"
 
-
 typedef struct _cactus {
     // the sprite itself provides this functionality
     // Vec2i size;

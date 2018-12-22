@@ -3,8 +3,8 @@
 
 #include "../util/Geometry.h"
 
-// "sprite" consists of a vector describing its size and an ascii string;
-// example: 
+// "sprite" consists vectors describing its size and poition 
+// as well as an ascii string describing what it looks like
 typedef struct _sprite {
     const Vec2i size;
     Vec2i position;

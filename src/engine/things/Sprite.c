@@ -92,19 +92,19 @@ const Sprite BIG_CACTUS_2 = (Sprite) {(Vec2i){12,9},(Vec2i){0,0},"\
        wWWw\0"};
 
 const Sprite SMALL_CACTUS_1 = (Sprite) {(Vec2i){5,7},(Vec2i){0,0},"\
-        _\n\
-       │ │\n\
-       │ │_n\n\
-       │  _/\n\
-       │ │\n\
-       │ │\n\
-       wWw\n\0"};
+        _\0\
+       │ │\0\
+       │ │_n\0\
+       │  _/\0\
+       │ │\0\
+       │ │\0\
+       wWw\0"};
 
 const Sprite SMALL_CACTUS_2 = (Sprite) {(Vec2i){8,7},(Vec2i){0,0},"\
-        _\n\
-       │ │  _\n\
-       │ │ │ │\n\
-     n_│ │ │ │\n\
-     \\_  │/ /\n\
-       │ │ │\n\
-       wWwWw\n\0"};
+        _\0\
+       │ │  _\0\
+       │ │ │ │\0\
+     n_│ │ │ │\0\
+     \\_  │/ /\0\
+       │ │ │\0\
+       wWwWw\0"};
