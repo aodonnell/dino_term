@@ -19,7 +19,6 @@ Dino * newDino(){
 
     dino->sprites = malloc(dino->total_frames*sizeof(Sprite));
 
-
     // set the sprites
     dino->sprites[0] = malloc(sizeof(DINO_BASIC));
                        memcpy(dino->sprites[0], &DINO_BASIC, sizeof(DINO_BASIC));
@@ -61,14 +60,6 @@ void destroyDino(Dino * dino){
     }
     free(dino);
 }
-
-// void drawDinoHere(const Dino * dino, const Vec2i * here){
-//     Vec2i adjust = vec2i(here->x, here->y); 
-//     for(int i = 0; i < dino->size.y; i++){
-//         drawLineAlpha(dino->sprites[dino->frame][i], &adjust);
-//         adjust.y--;
-//     }
-// }
 
 void drawDino(const Dino * dino){
 
