@@ -10,7 +10,6 @@ void adjustTermSize(){
     refresh();
     getmaxyx(stdscr, termSize.y, termSize.x);
     logger("term size changed: {%d, %d}\n", termSize.x, termSize.y);
-
 }
 
 void termMaxSize(){
@@ -69,31 +68,28 @@ void drawLineAlpha(char * const line, const Vec2i * pos){
     mvprintw(termSize.y - adjust.y, adjust.x, p); 
 }
 
-// size = number of null characters in the raw string
-void drawRawAlpha(char * const lines, int size, const Vec2i * pos){
+void drawSprite(const Sprite * sprite){
+    const char * p = sprite->lines;
 
-    char * p = lines;
-
-    // for each null, there is a line (remember to adjust the y)
     for(int i = 0; ; i++){
         
-        int adjustx = pos->x;
+        int adjustx = sprite->position.x;
 
         while(*p == ' '){
             p++;
             adjustx++;
         }
 
-        mvprintw(termSize.y - (pos->y - i), adjustx, p);
+        mvprintw(termSize.y - (sprite->position.y - i), adjustx, p);
 
-        if(i<size){
+        if(i < sprite->size.y){
             p += strlen(p)+1;
             continue;
         } else {
             break;
         }
     }
-}
+};
 
 const Vec2i * getTermSize(){
     return &termSize;

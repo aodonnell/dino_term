@@ -4,25 +4,24 @@
 #include <stdbool.h>
 
 #include "../util/Geometry.h"
-#include "../util/Physics.h"
-#include "Dino.h"
+#include "Sprite.h"
+
 
 typedef struct _cactus {
-    Vec2i size;
-    Physics2f physics;
-    char ** lines;
+    // the sprite itself provides this functionality
+    // Vec2i size;
+    // Vec2i position;
+    Sprite sprite;
 } Cactus;
 
 Cactus * newCactus();
 
 void destroyCactus(Cactus * cactus);
 
-// void drawCactus(const Cactus * cactus);
+void drawCactus(const Cactus * cactus);
 
-void drawCactusHere(const Cactus * cactus, const Vec2i * here);
+// void drawCactusHere(const Cactus * cactus, const Vec2i * here);
 
 void tickCactus(Cactus * cactus);
-
-bool collideCactus(Cactus * cactus, Dino * dino);
 
 #endif

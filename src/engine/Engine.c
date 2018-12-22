@@ -61,7 +61,7 @@ void start(Engine * engine){
  */
 void loop(Engine * engine){
 
-    Dino * dino = newDinoFromFile("resources/dinoascii.txt", GROUND);
+    Dino * dino = newDino();
     Scene * scene = newSceneFromFile("resources/terrain.txt");
     Cactus * cactus = newCactus();
 
@@ -108,7 +108,7 @@ void loop(Engine * engine){
         // draw everything here
         drawScene(scene);
         drawDino(dino);
-        drawCactusHere(cactus, &here);
+        // drawCactusHere(cactus, &here);
         // drawing ends
         termRefresh();
 

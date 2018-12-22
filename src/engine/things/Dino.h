@@ -2,20 +2,23 @@
 #define DINO_H_
 
 #include "../util/Geometry.h"
-#include "../util/Physics.h"
+
+#include "Sprite.h"
 
 typedef struct _dino {
-    Vec2i size;
-    Physics2f physics;
+    // Vec2i size; // TODO size should be drawn from the current frame
+    Vec2f s;
+    Vec2f ds;
+    Vec2f d2s;
     int canJump;
-    int frames;
+    int total_frames;
     int frame;
-    char *** lines;
+    Sprite ** sprites;
 } Dino;
 
 Dino * newDino();
 
-Dino * newDinoFromFile(const char * fnames, int ground);
+// Dino * newDinoFromFile(const char * fnames, int ground);
 
 void destroyDino(Dino * dino);
 
@@ -28,5 +31,7 @@ void tickDino(Dino * dino);
 void jumpDino(Dino * dino);
 
 void cycleAnimationDino(Dino * dino);
+
+void syncSprite(Dino * dino);
 
 #endif

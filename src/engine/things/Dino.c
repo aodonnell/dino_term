@@ -5,123 +5,81 @@
 #include "../util/termlib.h"
 #include "../util/logger.h"
 
+#include "Sprite.h"
 #include "Dino.h"
 
-int _ground;
+// FIXME hardcoded ground height
+int _ground = 5;
 
 Dino * newDino(){
     Dino * dino = calloc(1, sizeof(Dino));
-    return dino;
-};
 
-// todo hardcode the sprite to avoid files
-// it would be cool to load the dino from a file once than store it in a resource header
-// like have a loader utility that writes c code to include a sprite.
-Dino * newDinoFromFile(const char * fname, int ground){
-    Dino * dino = calloc(1, sizeof(Dino));
+    dino->frame = 0;
+    dino->total_frames = 3;
 
-    FILE * fd = fopen(fname, "r");
+    dino->sprites = malloc(dino->total_frames*sizeof(Sprite));
 
-    if(!fd){
-        logbroke("FILE NOT FOUND\n");
-        logger("FILE NOT FOUND: %d\n", fname);
-        exit(EXIT_FAILURE);
-    }
 
-    logger("opened: %s\n", fname);
-
-    // parse the dimensions of the dino and the number of frames of the sprite
-
-    // XXX: it would be nicer to calculate it. It would make it way easier to make resources.
-    // I guess ideally we wouldn't have to load in from files anyway
-    // we'd have all of the resources in a header or something.
-    fscanf(fd, "%d %d %d", &dino->size.x, &dino->size.y, &dino->frames);
+    // set the sprites
+    dino->sprites[0] = malloc(sizeof(DINO_BASIC));
+                       memcpy(dino->sprites[0], &DINO_BASIC, sizeof(DINO_BASIC));
     
-    // get rid of the newlines after the size
-    getc(fd);
-    getc(fd);
+    dino->sprites[1] = malloc(sizeof(DINO_RUNNING_1));
+                       memcpy(dino->sprites[1], &DINO_RUNNING_1, sizeof(DINO_RUNNING_1));
 
-    // initialize the frames
-    dino->lines = calloc(dino->frames, sizeof(char **));
+    dino->sprites[2] = malloc(sizeof(DINO_RUNNING_2));
+                       memcpy(dino->sprites[2], &DINO_RUNNING_2, sizeof(DINO_RUNNING_2));
 
-    // initialize the lines
-    for(int f = 0; f < dino->frames; f++){
-        dino->lines[f] = calloc(dino->size.x, sizeof(char *));
-        
-        for(int i = 0; i < dino->size.y; i++){
 
-            dino->lines[f][i] = calloc(dino->size.x, sizeof(char));
+    // initialize the physics
+    dino->s.x = 20;
+    dino->s.y = _ground + dino->sprites[dino->frame]->size.y - 1;
+    dino->ds.x = 0;
+    dino->ds.y = 0;    
+    dino->d2s.x = 0;
+    dino->d2s.y = 0;
 
-            fgets(dino->lines[f][i], termSize.x, fd);
-            // (MORE HACKS)
-            strtok(dino->lines[f][i], "\n");
-
-            // logger("Frame %d loaded line: %s\n",f, dino->lines[f][i]);
-
-        }
-    }
-
-    // init dummy physics
-    dino->physics.s.x = 20;
-    dino->physics.s.y = ground + dino->size.y - 1;
-    dino->physics.ds.x = 0;
-    dino->physics.ds.y = 0;    
-    dino->physics.d2s.x = 0;
-    dino->physics.d2s.y = 0;
+    syncSprite(dino);
 
     dino->canJump = 1;
 
-    _ground = ground;
-
-    fclose(fd);
     return dino;
-}
+};
 
 void destroyDino(Dino * dino){
     if(dino){
-        if(dino->lines){
-            for(int i=0; i<dino->frames; i++){
-                if(dino->lines[i]){
-                    for(int j=0; j<dino->size.y; j++){
-                        if(dino->lines[i][j]){
-                            free(dino->lines[i][j]);
-                        }else{
-                            break;
-                        }
-                    }
-                    free(dino->lines[i]);
+        if(dino->sprites){
+            for(int i=0; i<dino->total_frames; i++){
+                if(dino->sprites[i]){
+                    free(dino->sprites[i]);
                 }else{
                     break;
                 }
             }
         }
-        free(dino->lines);
+        free(dino->sprites);
     }
     free(dino);
 }
 
-void drawDinoHere(const Dino * dino, const Vec2i * here){
-    Vec2i adjust = vec2i(here->x, here->y); 
-    for(int i = 0; i < dino->size.y; i++){
-        drawLineAlpha(dino->lines[dino->frame][i], &adjust);
-        adjust.y--;
-    }
-}
+// void drawDinoHere(const Dino * dino, const Vec2i * here){
+//     Vec2i adjust = vec2i(here->x, here->y); 
+//     for(int i = 0; i < dino->size.y; i++){
+//         drawLineAlpha(dino->sprites[dino->frame][i], &adjust);
+//         adjust.y--;
+//     }
+// }
 
 void drawDino(const Dino * dino){
-    Vec2i adjust = vec2i((int)dino->physics.s.x, (int)dino->physics.s.y); 
-    for(int i = 0; i < dino->size.y; i++){
-        drawLineAlpha(dino->lines[dino->frame][i], &adjust);
-        adjust.y--;
-    }
+
+    drawSprite(dino->sprites[dino->frame]);
 }
 
 void tickDino(Dino * dino){
 
     static int animation_counter;
-    
     // if the dino is on the ground, animate the walking cycle
-    if(dino->physics.s.y == _ground + dino->size.y - 1){
+    if(dino->s.y == _ground + dino->sprites[dino->frame]->size.y - 1){
         if(!(animation_counter%5) && animation_counter){
             cycleAnimationDino(dino);    
             animation_counter = 0;
@@ -130,17 +88,21 @@ void tickDino(Dino * dino){
             animation_counter++;
         }
     }
+    logger("hereya\n");
 
-    tickPhysicsf(&dino->physics);
+    vaccf(&dino->s, &dino->ds);
+    vaccf(&dino->ds, &dino->d2s);
 
     // stop if you hit the ground
-    if(dino->physics.s.y < (_ground + dino->size.y - 1)){
-        dino->physics.s.y = _ground + dino->size.y - 1;
-        dino->physics.d2s.y = 0;
-        dino->physics.ds.y = 0;
+    if(dino->s.y < (_ground + dino->sprites[dino->frame]->size.y - 1)){
+        dino->s.y = _ground + dino->sprites[dino->frame]->size.y - 1;
+        dino->d2s.y = 0;
+        dino->ds.y = 0;
         dino->canJump = 1;
         cycleAnimationDino(dino);
     }
+
+    syncSprite(dino);
 }
 
 void set_ground(int ground){
@@ -149,10 +111,9 @@ void set_ground(int ground){
 
 void jumpDino(Dino * dino){
     if(dino->canJump){
-        // logger("Jumping\n");
         dino->frame = 0;
-        dino->physics.ds.y=4.7;
-        dino->physics.d2s.y=-.55;
+        dino->ds.y=4.7;
+        dino->d2s.y=-.55;
         dino->canJump = 0;
     }
 }
@@ -166,5 +127,8 @@ void cycleAnimationDino(Dino * dino){
         walkCycle = 1;
     }
     dino->frame = walkCycle;
-    // logger("switching to frame %d\n", dino->frame);
+}
+
+void syncSprite(Dino * dino){
+    dino->sprites[dino->frame]->position = (Vec2i){(int)dino->s.x, (int)dino->s.y};
 }
