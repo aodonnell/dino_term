@@ -142,7 +142,6 @@ void tickScene(Scene * scene){
         addObstacle(scene);
     }
 
-
     cycleScene(scene);
 }
 
