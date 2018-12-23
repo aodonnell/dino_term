@@ -179,7 +179,7 @@ void addObstacle(Scene * scene){
 
     // we need to make a new cactus no matter what
     Cactus * cactus = newCactus();
-    cactus->sprite->position = (Vec2i){termSize.x - cactus->sprite->size.x, 5 + cactus->sprite->size.y-1};
+    cactus->sprite->position = (Vec2i){termSize.x - 2*cactus->sprite->size.x, 5 + cactus->sprite->size.y-1};
 
     // init the list if it is empty
     if(!scene->obstacles){
@@ -208,7 +208,6 @@ void removeObstacle(Scene * scene){
         logger("no more obstacles!\n");
     } else {
         Obstacles * temp = scene->obstacles->next;
-        logger("boom\n");
         destroyCactus(scene->obstacles->cactus);
         scene->obstacles = temp; 
     }
