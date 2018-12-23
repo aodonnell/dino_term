@@ -79,7 +79,6 @@ void tickDino(Dino * dino){
             animation_counter++;
         }
     }
-    logger("hereya\n");
 
     vaccf(&dino->s, &dino->ds);
     vaccf(&dino->ds, &dino->d2s);
@@ -92,7 +91,7 @@ void tickDino(Dino * dino){
         dino->canJump = 1;
         cycleAnimationDino(dino);
     }
-
+    
     syncSprite(dino);
 }
 
@@ -103,8 +102,8 @@ void set_ground(int ground){
 void jumpDino(Dino * dino){
     if(dino->canJump){
         dino->frame = 0;
-        dino->ds.y=4.7;
-        dino->d2s.y=-.55;
+        dino->ds.y=2.5;
+        dino->d2s.y=-.15;
         dino->canJump = 0;
     }
 }

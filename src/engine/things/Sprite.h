@@ -23,6 +23,8 @@ extern const Sprite DINO_RUNNING_1;
 
 extern const Sprite DINO_RUNNING_2;
 
+extern const Sprite DINO_DEAD;
+
 //==========================================================================
 // CACTI
 //==========================================================================

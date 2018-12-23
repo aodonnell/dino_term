@@ -31,6 +31,10 @@ Scene * newSceneFromFile(const char * fname){
     scene->terrainSize = termSize.x;
     scene->terrainPosition = scene->size.x - scene->terrainSize;
     scene->terrainEnd = 0;
+
+    scene->obstacles = NULL;
+
+
     return scene;
 };
 
@@ -53,7 +57,6 @@ void destroyScene(Scene * scene){
 void drawScene(Scene * scene){
     // todo change me to match the cycleScene function
     Vec2i a1 = vec2i(0, scene->size.y); 
-    // logger("c: <%s>\n", c);
    
     if(scene->terrainEnd > scene->terrainPosition){
         for(int i = 0; i < scene->size.y; i++){
@@ -71,6 +74,8 @@ void drawScene(Scene * scene){
             a2.y--;
         }
     }
+
+    drawObstacles(scene);
 };
 
 void cycleScene(Scene * scene){
@@ -115,10 +120,6 @@ void cycleScene(Scene * scene){
     }
     scene->terrainPosition=(scene->terrainPosition+1)%(scene->size.x);
     scene->terrainEnd=(scene->terrainEnd+1)%(scene->size.x);
-
-
-    // logger("scene: %d, end: %d\n", scene->terrainPosition, scene->terrainEnd);
-
 }
 
 void tickScene(Scene * scene){
@@ -130,5 +131,85 @@ void tickScene(Scene * scene){
     // else{
     //     animation_buffer++;
     // }
+
+    Obstacles * p = scene->obstacles;
+    while(p){
+        p->cactus->sprite->position.x--;
+        p = p->next;
+    }
+
+    if(rand()%25 == 3){
+        addObstacle(scene);
+    }
+
+
     cycleScene(scene);
+}
+
+void drawObstacles(Scene * scene){
+    cleanObstacles(scene);
+    Obstacles * p = scene->obstacles;
+    while(p){
+        drawCactus(p->cactus);
+        p = p->next;
+    }
+}
+
+int n_obstacles(Obstacles * obstacles){
+    Obstacles * p = obstacles;
+    int c = 0;
+    while(p){
+        c++;
+        p = p->next;
+    }
+    return c;
+}
+
+void cleanObstacles(Scene * scene){
+    Obstacles * p = scene->obstacles;
+    while(p && p->cactus->sprite->position.x + p->cactus->sprite->size.x + 1< 0){
+        removeObstacle(scene);
+        p = p->next;
+    }
+}
+
+
+// add obstacles to the end
+void addObstacle(Scene * scene){
+
+    // we need to make a new cactus no matter what
+    Cactus * cactus = newCactus();
+    cactus->sprite->position = (Vec2i){termSize.x - cactus->sprite->size.x, 5 + cactus->sprite->size.y-1};
+
+    // init the list if it is empty
+    if(!scene->obstacles){
+        scene->obstacles = malloc(sizeof(Obstacles));
+        scene->obstacles->cactus = cactus;
+        scene->obstacles->next = NULL;
+        return;
+    }
+
+    Obstacles * p = scene->obstacles;
+
+    // go to the end of the list;
+    while(p->next){
+        p = p->next;
+    }
+
+    p->next = malloc(sizeof(Obstacles));
+    p->next->cactus = cactus;
+    p->next->next = NULL;
+
+}
+
+// remove obstacle to the front
+void removeObstacle(Scene * scene){
+    if(!scene->obstacles){
+        logger("no more obstacles!\n");
+    } else {
+        Obstacles * temp = scene->obstacles->next;
+        logger("boom\n");
+        destroyCactus(scene->obstacles->cactus);
+        scene->obstacles = temp; 
+    }
 }

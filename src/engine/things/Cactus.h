@@ -10,7 +10,7 @@ typedef struct _cactus {
     // the sprite itself provides this functionality
     // Vec2i size;
     // Vec2i position;
-    Sprite sprite;
+    Sprite * sprite;
 } Cactus;
 
 Cactus * newCactus();
