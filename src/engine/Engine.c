@@ -8,6 +8,7 @@
 #include "Engine.h"
 #include "things/Dino.h"
 #include "things/Scene.h"
+#include "things/HUD.h"
 #include "util/termlib.h"
 #include "util/logger.h"
 
@@ -63,8 +64,7 @@ void loop(Engine * engine){
 
     Dino * dino = newDino();
     Scene * scene = newSceneFromFile("resources/terrain.txt");
-    Cactus * cactus = newCactus();
-
+    HUD * hud = newHUD();
     logger("term size: {%d, %d}\n", termSize.x, termSize.y);
 
     clock_t frame_clock;
@@ -103,11 +103,13 @@ void loop(Engine * engine){
 
         tickDino(dino);
         tickScene(scene);
-        
+        tickHUD(hud);
+
         termClear();
         // draw everything here
         drawScene(scene);
         drawDino(dino);
+        drawHUD(hud);
         // drawCactusHere(cactus, &here);
         // drawing ends
         termRefresh();
@@ -121,6 +123,8 @@ void loop(Engine * engine){
         usleep(delay); 
 
     }
+    destroyScene(scene);
+    destroyDino(dino);
 }
 
 void init(Engine * engine){
